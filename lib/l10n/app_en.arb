@@ -1,0 +1,110 @@
+{
+  "@@locale": "en",
+
+  "today": "Today",
+  "upcoming": "Upcoming",
+  "categories": "Categories",
+  "statistics": "Statistics",
+  "profile": "Profile",
+
+  "logout": "Logout",
+  "email": "Email",
+  "password": "Password",
+  "language": "Language",
+  "settings": "Settings",
+
+  "accountInformation": "ACCOUNT INFORMATION",
+  "changeEmail": "Change Email",
+  "newEmail": "New Email",
+
+  "save": "Save",
+  "cancel": "Cancel",
+
+  "logoutConfirm": "Are you sure you want to log out?",
+  "yes": "Yes",
+  "no": "No",
+
+  "noTasksYet": "No tasks yet",
+  "overallProgress": "Overall Progress",
+  "complete": "Complete",
+  "completed": "Completed",
+  "pending": "Pending",
+  "totalTasks": "Total Tasks",
+  "recentActivity": "Recent Activity",
+  "priorityBreakdown": "Priority Breakdown",
+  "highPriority": "High Priority",
+  "mediumPriority": "Medium Priority",
+  "lowPriority": "Low Priority",
+  "categoryOverview": "Category Overview",
+
+  "all": "All",
+  "work": "Work",
+  "personal": "Personal",
+  "shopping": "Shopping",
+  "health": "Health",
+  "learning": "Learning",
+  "home": "Home",
+
+  "noTasksInCategory": "No tasks in this category",
+  "noTasksToday": "No tasks for today",
+  "createTaskToStart": "Create a task to get started",
+  "noUpcomingTasks": "No upcoming tasks",
+
+  "tomorrow": "Tomorrow",
+  "nextWeek": "Next week",
+  "thisWeek": "This week",
+
+  "welcomeBack": "Welcome Back",
+  "signInToContinue": "Sign in to continue managing your tasks",
+  "enterEmail": "Enter your email",
+  "enterPassword": "Enter your password",
+  "signIn": "Sign In",
+
+  "changeName": "Change Name",
+  "newName": "New name",
+  "selectLanguage": "Select language",
+  "uzbek": "Uzbek",
+  "english": "English",
+  "russian": "Russian",
+
+  "newTaskTitle": "New Task",
+  "editTaskTitle": "Edit Task",
+
+  "taskTitleLabel": "Task title",
+  "taskDescLabel": "Description (optional)",
+
+  "priority": "Priority",
+  "category": "Category",
+  "dueDate": "Due date",
+
+  "low": "Low",
+  "medium": "Medium",
+  "high": "High",
+
+  "delete": "Delete",
+  "update": "Update",
+  "add": "Add",
+
+  "deleteTitle": "Delete task",
+  "deleteConfirm": "Do you want to delete this task?",
+
+  "name": "Name",
+  "enterName": "Enter your name",
+
+  "enterTaskTitle": "Please enter task title",
+  "taskAdded": "Task added",
+  "taskUpdated": "Task updated",
+  "taskDeleted": "Task deleted",
+
+  "taskOverdueCannotComplete": "Task deadline has passed. You can't complete it now.",
+
+  "selectDate": "Select date",
+  "notSelected": "Not selected",
+
+  "completedCount": "{count} completed",
+  "@completedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
+}

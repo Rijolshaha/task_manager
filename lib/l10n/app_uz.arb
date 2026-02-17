@@ -1,0 +1,111 @@
+{
+  "@@locale": "uz",
+
+  "today": "Bugun",
+  "upcoming": "Kelgusi",
+  "categories": "Kategoriyalar",
+  "statistics": "Statistika",
+  "profile": "Profil",
+
+  "logout": "Chiqish",
+  "email": "Email",
+  "password": "Parol",
+  "language": "Til",
+  "settings": "Sozlamalar",
+
+  "accountInformation": "HISOB MA'LUMOTLARI",
+  "changeEmail": "Emailni o‘zgartirish",
+  "newEmail": "Yangi email",
+
+  "save": "Saqlash",
+  "cancel": "Bekor qilish",
+
+  "logoutConfirm": "Haqiqatan ham chiqmoqchimisiz?",
+  "yes": "Ha",
+  "no": "Yo‘q",
+
+  "noTasksYet": "Hozircha vazifalar yo‘q",
+  "overallProgress": "Umumiy taraqqiyot",
+  "complete": "Tugallangan",
+  "completed": "Tugallangan",
+  "pending": "Kutilmoqda",
+  "totalTasks": "Jami vazifalar",
+  "recentActivity": "So‘nggi faoliyat",
+  "priorityBreakdown": "Muhimlik darajasi",
+  "highPriority": "Yuqori muhimlik",
+  "mediumPriority": "O‘rta muhimlik",
+  "lowPriority": "Past muhimlik",
+  "categoryOverview": "Kategoriyalar bo‘yicha",
+
+  "all": "Barchasi",
+  "work": "Ish",
+  "personal": "Shaxsiy",
+  "shopping": "Xaridlar",
+  "health": "Sog‘liq",
+  "learning": "O‘qish",
+  "home": "Uy",
+
+  "noTasksInCategory": "Bu kategoriyada vazifalar yo‘q",
+  "noTasksToday": "Bugun vazifalar yo‘q",
+  "createTaskToStart": "Boshlash uchun vazifa yarating",
+  "noUpcomingTasks": "Kelgusi vazifalar yo‘q",
+
+  "tomorrow": "Ertaga",
+  "nextWeek": "Keyingi hafta",
+  "thisWeek": "Shu hafta",
+
+  "welcomeBack": "Xush kelibsiz",
+  "signInToContinue": "Vazifalarni boshqarishni davom ettirish uchun kiring",
+  "enterEmail": "Emailingizni kiriting",
+  "enterPassword": "Parolingizni kiriting",
+  "signIn": "Kirish",
+
+  "changeName": "Ismni o‘zgartirish",
+  "newName": "Yangi ism",
+  "selectLanguage": "Tilni tanlang",
+  "uzbek": "O‘zbekcha",
+  "english": "Inglizcha",
+  "russian": "Ruscha",
+
+  "newTaskTitle": "Yangi vazifa",
+  "editTaskTitle": "Vazifani tahrirlash",
+
+  "taskTitleLabel": "Vazifa nomi",
+  "taskDescLabel": "Tavsif (ixtiyoriy)",
+
+  "priority": "Muhimlik",
+  "category": "Kategoriya",
+  "dueDate": "Muddat",
+
+  "low": "Past",
+  "medium": "O‘rta",
+  "high": "Yuqori",
+
+  "delete": "O‘chirish",
+  "update": "Yangilash",
+  "add": "Qo‘shish",
+
+  "deleteTitle": "Vazifani o‘chirish",
+  "deleteConfirm": "Bu vazifani o‘chirmoqchimisiz?",
+
+  "name": "Ism",
+  "enterName": "Ismingizni kiriting",
+
+
+  "enterTaskTitle": "Vazifa nomini kiriting",
+  "taskAdded": "Vazifa qo‘shildi",
+  "taskUpdated": "Vazifa yangilandi",
+  "taskDeleted": "Vazifa o‘chirildi",
+
+  "taskOverdueCannotComplete": "Vazifa muddati o‘tib ketgan. Endi uni bajarib bo‘lmaydi.",
+
+  "selectDate": "Sanani tanlash",
+  "notSelected": "Tanlanmagan",
+
+  "completedCount": "{count} ta bajarildi",
+  "@completedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
+}

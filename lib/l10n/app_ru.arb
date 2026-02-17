@@ -1,0 +1,112 @@
+{
+  "@@locale": "ru",
+
+  "today": "Сегодня",
+  "upcoming": "Предстоящие",
+  "categories": "Категории",
+  "statistics": "Статистика",
+  "profile": "Профиль",
+
+  "logout": "Выйти",
+  "email": "Email",
+  "password": "Пароль",
+  "language": "Язык",
+  "settings": "Настройки",
+
+  "accountInformation": "ИНФОРМАЦИЯ ОБ АККАУНТЕ",
+  "changeEmail": "Изменить email",
+  "newEmail": "Новый email",
+
+  "save": "Сохранить",
+  "cancel": "Отмена",
+
+  "logoutConfirm": "Вы действительно хотите выйти?",
+  "yes": "Да",
+  "no": "Нет",
+
+  "noTasksYet": "Пока нет задач",
+  "overallProgress": "Общий прогресс",
+  "complete": "Завершено",
+  "completed": "Завершено",
+  "pending": "В ожидании",
+  "totalTasks": "Всего задач",
+  "recentActivity": "Недавняя активность",
+  "priorityBreakdown": "Разбивка по приоритету",
+  "highPriority": "Высокий приоритет",
+  "mediumPriority": "Средний приоритет",
+  "lowPriority": "Низкий приоритет",
+  "categoryOverview": "Обзор категорий",
+
+  "all": "Все",
+  "work": "Работа",
+  "personal": "Личное",
+  "shopping": "Покупки",
+  "health": "Здоровье",
+  "learning": "Обучение",
+  "home": "Дом",
+
+  "noTasksInCategory": "В этой категории нет задач",
+  "noTasksToday": "На сегодня задач нет",
+  "createTaskToStart": "Создайте задачу, чтобы начать",
+  "noUpcomingTasks": "Нет предстоящих задач",
+
+  "tomorrow": "Завтра",
+  "nextWeek": "На следующей неделе",
+  "thisWeek": "На этой неделе",
+
+  "welcomeBack": "С возвращением",
+  "signInToContinue": "Войдите, чтобы продолжить управление задачами",
+  "enterEmail": "Введите email",
+  "enterPassword": "Введите пароль",
+  "signIn": "Войти",
+
+  "changeName": "Изменить имя",
+  "newName": "Новое имя",
+  "selectLanguage": "Выберите язык",
+  "uzbek": "Узбекский",
+  "english": "Английский",
+  "russian": "Русский",
+
+  "newTaskTitle": "Новая задача",
+  "editTaskTitle": "Редактировать задачу",
+
+  "taskTitleLabel": "Название задачи",
+  "taskDescLabel": "Описание (необязательно)",
+
+  "priority": "Приоритет",
+  "category": "Категория",
+  "dueDate": "Срок",
+
+  "low": "Низкий",
+  "medium": "Средний",
+  "high": "Высокий",
+
+  "delete": "Удалить",
+  "update": "Обновить",
+  "add": "Добавить",
+
+  "deleteTitle": "Удалить задачу",
+  "deleteConfirm": "Удалить эту задачу?",
+
+  "name": "Имя",
+  "enterName": "Введите имя",
+
+
+
+  "enterTaskTitle": "Введите название задачи",
+  "taskAdded": "Задача добавлена",
+  "taskUpdated": "Задача обновлена",
+  "taskDeleted": "Задача удалена",
+
+  "taskOverdueCannotComplete": "Срок задачи истёк. Теперь её нельзя завершить.",
+
+  "selectDate": "Выбрать дату",
+  "notSelected": "Не выбрано",
+
+  "completedCount": "Выполнено: {count}",
+  "@completedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
+}
