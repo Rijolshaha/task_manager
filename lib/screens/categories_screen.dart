@@ -13,19 +13,19 @@ class CategoriesScreen extends StatefulWidget {
   State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerProviderStateMixin {
+class _CategoriesScreenState extends State<CategoriesScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // value -> DB/Hive ichidagi category qiymati (o'zgarmaydi)
-  // label -> ekranga chiqadigan tarjima
-  final List<Map<String, dynamic>> tabs = [
-    {'value': 'All', 'icon': Icons.all_inclusive},
-    {'value': 'Work', 'icon': Icons.work},
-    {'value': 'Personal', 'icon': Icons.person},
-    {'value': 'Shopping', 'icon': Icons.shopping_cart},
-    {'value': 'Health', 'icon': Icons.favorite},
-    {'value': 'Learning', 'icon': Icons.school},
-    {'value': 'Home', 'icon': Icons.home},
+  // ✅ value = DB/Hive ichidagi category KEY (work/personal/...)
+  final List<Map<String, dynamic>> tabs = const [
+    {'value': 'all', 'icon': Icons.all_inclusive},
+    {'value': 'work', 'icon': Icons.work},
+    {'value': 'personal', 'icon': Icons.person},
+    {'value': 'shopping', 'icon': Icons.shopping_cart},
+    {'value': 'health', 'icon': Icons.favorite},
+    {'value': 'learning', 'icon': Icons.school},
+    {'value': 'home', 'icon': Icons.home},
   ];
 
   @override
@@ -40,25 +40,58 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
     super.dispose();
   }
 
-  String _tabLabel(BuildContext context, String value) {
-    final l10n = AppLocalizations.of(context)!;
+  // ✅ eski tasklarda "Work" kabi bo‘lsa ham ishlasin
+  String _normalizeCategory(String value) {
+    final v = value.trim().toLowerCase();
+
+    if (v == 'all') return 'all';
+    if (v == 'work') return 'work';
+    if (v == 'personal') return 'personal';
+    if (v == 'shopping') return 'shopping';
+    if (v == 'health') return 'health';
+    if (v == 'learning') return 'learning';
+    if (v == 'home') return 'home';
+
+    // eski TitleCase variantlar
     switch (value) {
       case 'All':
-        return l10n.all;
+        return 'all';
       case 'Work':
-        return l10n.work;
+        return 'work';
       case 'Personal':
-        return l10n.personal;
+        return 'personal';
       case 'Shopping':
-        return l10n.shopping;
+        return 'shopping';
       case 'Health':
-        return l10n.health;
+        return 'health';
       case 'Learning':
-        return l10n.learning;
+        return 'learning';
       case 'Home':
+        return 'home';
+      default:
+        return 'personal';
+    }
+  }
+
+  String _tabLabel(BuildContext context, String key) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (key) {
+      case 'all':
+        return l10n.all;
+      case 'work':
+        return l10n.work;
+      case 'personal':
+        return l10n.personal;
+      case 'shopping':
+        return l10n.shopping;
+      case 'health':
+        return l10n.health;
+      case 'learning':
+        return l10n.learning;
+      case 'home':
         return l10n.home;
       default:
-        return value;
+        return key;
     }
   }
 
@@ -74,14 +107,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
           controller: _tabController,
           isScrollable: true,
           tabs: tabs.map((tab) {
-            final value = tab['value'] as String;
+            final key = tab['value'] as String;
             return Tab(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(tab['icon'], size: 18),
+                  Icon(tab['icon'] as IconData, size: 18),
                   const SizedBox(width: 8),
-                  Text(_tabLabel(context, value)),
+                  Text(_tabLabel(context, key)),
                 ],
               ),
             );
@@ -96,11 +129,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
           return TabBarView(
             controller: _tabController,
             children: tabs.map((tab) {
-              final value = tab['value'] as String;
+              final key = tab['value'] as String;
 
-              final filteredTasks = value == 'All'
+              final filteredTasks = key == 'all'
                   ? allTasks
-                  : allTasks.where((t) => t.category == value).toList();
+                  : allTasks
+                  .where((t) => _normalizeCategory(t.category) == key)
+                  .toList();
 
               if (filteredTasks.isEmpty) {
                 return Center(
@@ -125,7 +160,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
                           context: context,
                           isScrollControlled: true,
                           shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                            borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(24)),
                           ),
                           builder: (_) => EditTaskBottomSheet(task: task),
                         );

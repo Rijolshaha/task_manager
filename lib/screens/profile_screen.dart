@@ -38,6 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (await f.exists()) img = f;
     }
 
+    if (!mounted) return;
     setState(() {
       _username = user['name'] ?? '';
       _email = user['email'] ?? '';
@@ -50,6 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       await SessionService.saveProfileImagePath(pickedFile.path);
+      if (!mounted) return;
       setState(() => _profileImage = File(pickedFile.path));
     }
   }
@@ -89,7 +91,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (v.isNotEmpty) {
                 setState(() => _username = v);
                 final old = await SessionService.getUser();
-                await SessionService.saveUser(name: v, email: old['email'] ?? _email, password: old['password'] ?? '');
+                await SessionService.saveUser(
+                  name: v,
+                  email: old['email'] ?? _email,
+                  password: old['password'] ?? '',
+                );
               }
               if (mounted) Navigator.pop(context);
             },
@@ -124,7 +130,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (v.isNotEmpty) {
                 setState(() => _email = v);
                 final old = await SessionService.getUser();
-                await SessionService.saveUser(name: old['name'] ?? _username, email: v, password: old['password'] ?? '');
+                await SessionService.saveUser(
+                  name: old['name'] ?? _username,
+                  email: v,
+                  password: old['password'] ?? '',
+                );
               }
               if (mounted) Navigator.pop(context);
             },
@@ -156,8 +166,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onPressed: () async {
         MyApp.setLocale(context, locale);
         await SessionService.saveLocaleCode(locale.languageCode);
+        if (!mounted) return;
         setState(() => _selectedLocale = locale);
-        if (mounted) Navigator.pop(context);
+        Navigator.pop(context);
       },
       child: Text(label),
     );
@@ -185,6 +196,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Text(l10n.yes, style: const TextStyle(color: Colors.red)),
           ),
         ],
+      ),
+    );
+  }
+
+  // ✅ uzun email/ism UI buzmasin (1 qator + ellipsis)
+  Widget _trailingOneLine(String text) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 180),
+      child: Text(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.end,
       ),
     );
   }
@@ -234,44 +258,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
+
+                  // ✅ headerdagi ism ham uzun bo'lsa buzilmasin
                   GestureDetector(
                     onTap: _editName,
                     child: Text(
                       _username.isEmpty ? '---' : _username,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
+
+                  // ✅ headerdagi email ham uzun bo'lsa buzilmasin
                   GestureDetector(
                     onTap: _editEmail,
                     child: Text(
                       _email.isEmpty ? '---' : _email,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white70),
                     ),
                   ),
                 ],
               ),
             ),
-
             const SizedBox(height: 24),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(l10n.accountInformation, style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+                  Text(
+                    l10n.accountInformation,
+                    style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 12),
 
                   ListTile(
                     leading: const Icon(Icons.email),
                     title: Text(l10n.email),
-                    trailing: Text(_email),
+                    trailing: _trailingOneLine(_email.isEmpty ? '---' : _email),
                     onTap: _editEmail,
                   ),
 
                   const Divider(),
                   const SizedBox(height: 24),
 
-                  Text(l10n.settings, style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+                  Text(
+                    l10n.settings,
+                    style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 12),
 
                   ListTile(
