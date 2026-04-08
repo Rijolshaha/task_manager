@@ -22,18 +22,18 @@ Color _getCategoryColor(String cat) {
 }
 
 String _categoryLabel(AppLocalizations l10n, String key) {
-  switch (key) {
-    case 'Work':
+  switch (key.toLowerCase()) {
+    case 'work':
       return l10n.work;
-    case 'Personal':
+    case 'personal':
       return l10n.personal;
-    case 'Shopping':
+    case 'shopping':
       return l10n.shopping;
-    case 'Health':
+    case 'health':
       return l10n.health;
-    case 'Learning':
+    case 'learning':
       return l10n.learning;
-    case 'Home':
+    case 'home':
       return l10n.home;
     default:
       return key;
@@ -46,11 +46,7 @@ class TaskCard extends StatelessWidget {
   final Task task;
   final VoidCallback onEdit;
 
-  const TaskCard({
-    super.key,
-    required this.task,
-    required this.onEdit,
-  });
+  const TaskCard({super.key, required this.task, required this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +71,9 @@ class TaskCard extends StatelessWidget {
         ? l10n.today
         : due.isAtSameMomentAs(tomorrow)
         ? l10n.tomorrow
-        : MaterialLocalizations.of(context).formatShortDate(safeDue); // ✅ aniq sana
+        : MaterialLocalizations.of(
+            context,
+          ).formatShortDate(safeDue); // ✅ aniq sana
 
     final categoryText = _categoryLabel(l10n, task.category);
 
@@ -87,7 +85,9 @@ class TaskCard extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             task.isCompleted ? Icons.check_circle : Icons.circle_outlined,
-            color: task.isCompleted ? Colors.green : (task.isOverdue ? Colors.grey : categoryColor),
+            color: task.isCompleted
+                ? Colors.green
+                : (task.isOverdue ? Colors.grey : categoryColor),
             size: 28,
           ),
           onPressed: () {
@@ -110,7 +110,9 @@ class TaskCard extends StatelessWidget {
             color: task.isCompleted ? Colors.grey : null,
           ),
         ),
-        subtitle: task.description?.isNotEmpty == true ? Text(task.description!) : null,
+        subtitle: task.description?.isNotEmpty == true
+            ? Text(task.description!)
+            : null,
         trailing: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -118,10 +120,13 @@ class TaskCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: categoryColor.withOpacity(0.15),
+                color: categoryColor.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(categoryText, style: TextStyle(color: categoryColor, fontSize: 12)),
+              child: Text(
+                categoryText,
+                style: TextStyle(color: categoryColor, fontSize: 12),
+              ),
             ),
             const SizedBox(height: 4),
             Row(
@@ -130,7 +135,10 @@ class TaskCard extends StatelessWidget {
                 Container(
                   width: 10,
                   height: 10,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: priorityColor),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: priorityColor,
+                  ),
                 ),
                 const SizedBox(width: 4),
                 Text(
@@ -138,7 +146,9 @@ class TaskCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     color: task.isOverdue ? Colors.red : Colors.grey,
-                    fontWeight: task.isOverdue ? FontWeight.w600 : FontWeight.normal,
+                    fontWeight: task.isOverdue
+                        ? FontWeight.w600
+                        : FontWeight.normal,
                   ),
                 ),
               ],

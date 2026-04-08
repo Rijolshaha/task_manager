@@ -108,5 +108,7 @@
     "placeholders": {
       "count": { "type": "int" }
     }
-  }
+  },
+
+  "ai_assistant": "AI Помощник"
 }

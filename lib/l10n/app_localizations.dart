@@ -576,6 +576,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} completed'**
   String completedCount(int count);
+
+  /// No description provided for @ai_assistant.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Assistant'**
+  String get ai_assistant;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -5,6 +5,8 @@ import 'package:task_manager/services/session_service.dart';
 
 import 'l10n/app_localizations.dart';
 import 'models/task.dart';
+import 'models/chat_message.dart';
+import 'models/message_status.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'theme.dart'; // sizdagi AppTheme
@@ -14,7 +16,10 @@ void main() async {
 
   await Hive.initFlutter();
   Hive.registerAdapter(TaskAdapter());
+  Hive.registerAdapter(MessageStatusAdapter());
+  Hive.registerAdapter(ChatMessageAdapter());
   await Hive.openBox<Task>('tasks');
+  await Hive.openBox<ChatMessage>('chat_messages');
 
   runApp(const MyApp());
 }
@@ -61,7 +66,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (!_ready) {
-      return const MaterialApp(home: Scaffold(body: Center(child: CircularProgressIndicator())));
+      return const MaterialApp(
+        home: Scaffold(body: Center(child: CircularProgressIndicator())),
+      );
     }
 
     return MaterialApp(

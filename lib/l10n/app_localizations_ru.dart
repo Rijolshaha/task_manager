@@ -249,4 +249,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String completedCount(int count) {
     return 'Выполнено: $count';
   }
+
+  @override
+  String get ai_assistant => 'AI Помощник';
 }

@@ -48,7 +48,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _pickImage() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
     if (pickedFile != null) {
       await SessionService.saveProfileImagePath(pickedFile.path);
       if (!mounted) return;
@@ -84,7 +86,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
           TextButton(
             onPressed: () async {
               final v = controller.text.trim();
@@ -123,7 +128,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           keyboardType: TextInputType.emailAddress,
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
           TextButton(
             onPressed: () async {
               final v = controller.text.trim();
@@ -183,7 +191,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text(l10n.logout),
         content: Text(l10n.logoutConfirm),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.no)),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.no),
+          ),
           TextButton(
             onPressed: () async {
               await SessionService.clearAll();
@@ -191,7 +202,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               if (!mounted) return;
               Navigator.pop(context);
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              );
             },
             child: Text(l10n.yes, style: const TextStyle(color: Colors.red)),
           ),
@@ -218,6 +232,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -228,7 +251,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [const Color(0xFF0DCA9F), const Color(0xFF0DCA9F).withOpacity(0.7)],
+                  colors: [
+                    const Color(0xFF0DCA9F),
+                    const Color(0xFF0DCA9F).withValues(alpha: 0.7),
+                  ],
                 ),
               ),
               child: Column(
@@ -240,9 +266,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.white,
-                          backgroundImage: _profileImage != null ? FileImage(_profileImage!) : null,
+                          backgroundImage: _profileImage != null
+                              ? FileImage(_profileImage!)
+                              : null,
                           child: _profileImage == null
-                              ? const Icon(Icons.person, size: 60, color: Color(0xFF0DCA9F))
+                              ? const Icon(
+                                  Icons.person,
+                                  size: 60,
+                                  color: Color(0xFF0DCA9F),
+                                )
                               : null,
                         ),
                         const Positioned(
@@ -251,7 +283,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: CircleAvatar(
                             radius: 16,
                             backgroundColor: Colors.white,
-                            child: Icon(Icons.camera_alt, size: 18, color: Color(0xFF0DCA9F)),
+                            child: Icon(
+                              Icons.camera_alt,
+                              size: 18,
+                              color: Color(0xFF0DCA9F),
+                            ),
                           ),
                         ),
                       ],
@@ -267,7 +303,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
 
@@ -294,7 +334,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Text(
                     l10n.accountInformation,
-                    style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 12),
 
@@ -310,7 +353,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   Text(
                     l10n.settings,
-                    style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 12),
 
@@ -319,7 +365,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: Text(l10n.language),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [Text(_languageLabel(context, _selectedLocale)), const Icon(Icons.chevron_right)],
+                      children: [
+                        Text(_languageLabel(context, _selectedLocale)),
+                        const Icon(Icons.chevron_right),
+                      ],
                     ),
                     onTap: _changeLanguage,
                   ),
@@ -330,10 +379,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: OutlinedButton.icon(
                       onPressed: _logout,
                       icon: const Icon(Icons.logout, color: Colors.red),
-                      label: Text(l10n.logout, style: const TextStyle(color: Colors.red)),
+                      label: Text(
+                        l10n.logout,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Colors.red),
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 40,
+                          vertical: 16,
+                        ),
                       ),
                     ),
                   ),

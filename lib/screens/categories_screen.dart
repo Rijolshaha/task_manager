@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../l10n/app_localizations.dart';
 import '../models/task.dart';
-import '../widgets/task_card.dart';
-import '../widgets/new_task_bottom_sheet.dart';
+import '../widgets/app_drawer.dart';
 import '../widgets/edit_task_bottom_sheet.dart';
+import '../widgets/new_task_bottom_sheet.dart';
+import '../widgets/task_card.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -17,7 +18,6 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // ✅ value = DB/Hive ichidagi category KEY (work/personal/...)
   final List<Map<String, dynamic>> tabs = const [
     {'value': 'all', 'icon': Icons.all_inclusive},
     {'value': 'work', 'icon': Icons.work},
@@ -40,58 +40,31 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     super.dispose();
   }
 
-  // ✅ eski tasklarda "Work" kabi bo‘lsa ham ishlasin
   String _normalizeCategory(String value) {
     final v = value.trim().toLowerCase();
+    const known = ['all', 'work', 'personal', 'shopping', 'health', 'learning', 'home'];
+    if (known.contains(v)) return v;
 
-    if (v == 'all') return 'all';
-    if (v == 'work') return 'work';
-    if (v == 'personal') return 'personal';
-    if (v == 'shopping') return 'shopping';
-    if (v == 'health') return 'health';
-    if (v == 'learning') return 'learning';
-    if (v == 'home') return 'home';
-
-    // eski TitleCase variantlar
-    switch (value) {
-      case 'All':
-        return 'all';
-      case 'Work':
-        return 'work';
-      case 'Personal':
-        return 'personal';
-      case 'Shopping':
-        return 'shopping';
-      case 'Health':
-        return 'health';
-      case 'Learning':
-        return 'learning';
-      case 'Home':
-        return 'home';
-      default:
-        return 'personal';
-    }
+    // Eski TitleCase qiymatlar
+    final map = {
+      'All': 'all', 'Work': 'work', 'Personal': 'personal',
+      'Shopping': 'shopping', 'Health': 'health', 'Learning': 'learning',
+      'Home': 'home',
+    };
+    return map[value] ?? 'personal';
   }
 
   String _tabLabel(BuildContext context, String key) {
     final l10n = AppLocalizations.of(context)!;
     switch (key) {
-      case 'all':
-        return l10n.all;
-      case 'work':
-        return l10n.work;
-      case 'personal':
-        return l10n.personal;
-      case 'shopping':
-        return l10n.shopping;
-      case 'health':
-        return l10n.health;
-      case 'learning':
-        return l10n.learning;
-      case 'home':
-        return l10n.home;
-      default:
-        return key;
+      case 'all':      return l10n.all;
+      case 'work':     return l10n.work;
+      case 'personal': return l10n.personal;
+      case 'shopping': return l10n.shopping;
+      case 'health':   return l10n.health;
+      case 'learning': return l10n.learning;
+      case 'home':     return l10n.home;
+      default:         return key;
     }
   }
 
@@ -100,6 +73,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: Text(l10n.categories),
         centerTitle: false,
@@ -113,7 +87,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(tab['icon'] as IconData, size: 18),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 6),
                   Text(_tabLabel(context, key)),
                 ],
               ),
@@ -134,8 +108,8 @@ class _CategoriesScreenState extends State<CategoriesScreen>
               final filteredTasks = key == 'all'
                   ? allTasks
                   : allTasks
-                  .where((t) => _normalizeCategory(t.category) == key)
-                  .toList();
+                      .where((t) => _normalizeCategory(t.category) == key)
+                      .toList();
 
               if (filteredTasks.isEmpty) {
                 return Center(
@@ -160,8 +134,8 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                           context: context,
                           isScrollControlled: true,
                           shape: const RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(24)),
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(24)),
                           ),
                           builder: (_) => EditTaskBottomSheet(task: task),
                         );

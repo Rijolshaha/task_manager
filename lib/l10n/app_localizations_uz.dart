@@ -249,4 +249,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String completedCount(int count) {
     return '$count ta bajarildi';
   }
+
+  @override
+  String get ai_assistant => 'AI Yordamchi';
 }

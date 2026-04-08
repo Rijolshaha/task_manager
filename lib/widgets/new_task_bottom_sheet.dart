@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../l10n/app_localizations.dart';
 import '../models/task.dart';
@@ -96,6 +97,8 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
       helpText: l10n.selectDate,
     );
 
+    if (!mounted) return;
+
     if (picked != null) {
       final normalized = _dayStart(picked);
       setState(() {
@@ -132,9 +135,9 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
     if (_saving) return;
 
     if (_titleController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterTaskTitle)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.enterTaskTitle)));
       return;
     }
 
@@ -159,14 +162,17 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
 
     final box = Hive.box<Task>('tasks');
     final hiveKey = await box.add(newTask);
-    final int notifId = hiveKey is int ? hiveKey : hiveKey.hashCode;
+    final int notifId = hiveKey;
 
-    // ✅ 1) UI ni darrov yopamiz (notification xatosi UI ni buzmasin)
+    // Capture context-dependent values before async operations
     final messenger = ScaffoldMessenger.of(context);
-    if (mounted) Navigator.pop(context);
-    messenger.showSnackBar(SnackBar(content: Text(l10n.taskAdded)));
+    final taskAddedMessage = l10n.taskAdded;
 
-    // ✅ 2) Notification alohida try/catch bilan
+    if (!mounted) return;
+    Navigator.pop(context);
+    messenger.showSnackBar(SnackBar(content: Text(taskAddedMessage)));
+
+    // Notification scheduling in separate try/catch
     try {
       await NotificationService.requestPermissionIfNeeded();
       await NotificationService.schedule(
@@ -196,15 +202,19 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(l10n.newTaskTitle,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Text(
+              l10n.newTaskTitle,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 16),
 
             TextField(
               controller: _titleController,
               decoration: InputDecoration(
                 labelText: l10n.taskTitleLabel,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -213,13 +223,18 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
               controller: _descController,
               decoration: InputDecoration(
                 labelText: l10n.taskDescLabel,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               maxLines: 3,
             ),
             const SizedBox(height: 20),
 
-            Text(l10n.priority, style: const TextStyle(fontWeight: FontWeight.w600)),
+            Text(
+              l10n.priority,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -235,7 +250,10 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
             ),
             const SizedBox(height: 20),
 
-            Text(l10n.category, style: const TextStyle(fontWeight: FontWeight.w600)),
+            Text(
+              l10n.category,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -252,7 +270,10 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
             ),
             const SizedBox(height: 20),
 
-            Text(l10n.dueDate, style: const TextStyle(fontWeight: FontWeight.w600)),
+            Text(
+              l10n.dueDate,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -310,7 +331,9 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF0DCA9F),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               child: Text(
                 _saving ? '...' : l10n.add,

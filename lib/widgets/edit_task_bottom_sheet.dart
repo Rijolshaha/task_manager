@@ -42,7 +42,9 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
     super.initState();
 
     _titleController = TextEditingController(text: widget.task.title);
-    _descController = TextEditingController(text: widget.task.description ?? '');
+    _descController = TextEditingController(
+      text: widget.task.description ?? '',
+    );
 
     _categoryKey = _normalizeCategory(widget.task.category);
     _priorityIndex = widget.task.priorityIndex;
@@ -173,12 +175,19 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
         title: Text(l10n.deleteTitle),
         content: Text(l10n.deleteConfirm),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.no)),
-          TextButton(onPressed: () => Navigator.pop(context, true), child: Text(l10n.yes)),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.no),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.yes),
+          ),
         ],
       ),
     );
 
+    if (!mounted) return;
     if (shouldDelete != true) return;
 
     setState(() => _saving = true);
@@ -206,9 +215,9 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
     final l10n = AppLocalizations.of(context)!;
 
     if (_titleController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterTaskTitle)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.enterTaskTitle)));
       return;
     }
 
@@ -219,14 +228,17 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
     final notifyAt = _withDefaultTime(dueBase);
 
     widget.task.title = _titleController.text.trim();
-    widget.task.description =
-    _descController.text.trim().isNotEmpty ? _descController.text.trim() : null;
+    widget.task.description = _descController.text.trim().isNotEmpty
+        ? _descController.text.trim()
+        : null;
     widget.task.priorityIndex = _priorityIndex;
     widget.task.category = _categoryKey;
     widget.task.dueIndex = _dueIndex;
     widget.task.dueDate = dueBase;
 
     await widget.task.save();
+
+    if (!mounted) return;
 
     final key = widget.task.key;
     final int notifId = key is int ? key : key.hashCode;
@@ -271,9 +283,17 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(l10n.editTaskTitle,
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(context)),
+                Text(
+                  l10n.editTaskTitle,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -282,7 +302,9 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
               controller: _titleController,
               decoration: InputDecoration(
                 labelText: l10n.taskTitleLabel,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -291,13 +313,18 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
               controller: _descController,
               decoration: InputDecoration(
                 labelText: l10n.taskDescLabel,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               maxLines: 3,
             ),
             const SizedBox(height: 20),
 
-            Text(l10n.priority, style: const TextStyle(fontWeight: FontWeight.w600)),
+            Text(
+              l10n.priority,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -313,7 +340,10 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
             ),
             const SizedBox(height: 20),
 
-            Text(l10n.category, style: const TextStyle(fontWeight: FontWeight.w600)),
+            Text(
+              l10n.category,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -330,7 +360,10 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
             ),
             const SizedBox(height: 20),
 
-            Text(l10n.dueDate, style: const TextStyle(fontWeight: FontWeight.w600)),
+            Text(
+              l10n.dueDate,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,

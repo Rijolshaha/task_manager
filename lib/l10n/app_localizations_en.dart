@@ -249,4 +249,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String completedCount(int count) {
     return '$count completed';
   }
+
+  @override
+  String get ai_assistant => 'AI Assistant';
 }
