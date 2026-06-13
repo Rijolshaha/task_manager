@@ -131,13 +131,13 @@ void main() {
         expect(retrieved?.length, equals(apiKey.length));
       });
 
-      test('uses correct storage key "openai_api_key"', () async {
+      test('uses correct storage key "gemini_api_key"', () async {
         const apiKey = 'sk-1234567890abcdefghij';
 
         await apiKeyManager.saveApiKey(apiKey);
 
         // Verify the mock storage has the key with correct storage key
-        final storedValue = await mockStorage.read(key: 'openai_api_key');
+        final storedValue = await mockStorage.read(key: 'gemini_api_key');
         expect(storedValue, equals(apiKey));
       });
     });

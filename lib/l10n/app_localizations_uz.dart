@@ -252,4 +252,25 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get ai_assistant => 'AI Yordamchi';
+
+  @override
+  String get notifications => 'Bildirishnomalar';
+
+  @override
+  String get notificationsSubtitle => 'Keyingi 7 kun ichidagi vazifalar har 5 soatda eslatiladi';
+
+  @override
+  String get taskReminderTitle => 'Vazifa eslatmasi';
+
+  @override
+  String get apiKeySetup => 'Gemini API kaliti';
+
+  @override
+  String get enterApiKey => 'API kalitni kiriting';
+
+  @override
+  String get apiKeySaved => 'API kalit saqlandi';
+
+  @override
+  String get invalidApiKey => 'API kalit noto\'g\'ri formatda';
 }

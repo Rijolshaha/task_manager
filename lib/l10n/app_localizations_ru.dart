@@ -252,4 +252,25 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get ai_assistant => 'AI Помощник';
+
+  @override
+  String get notifications => 'Уведомления';
+
+  @override
+  String get notificationsSubtitle => 'Задачи на ближайшие 7 дней — напоминание каждые 5 часов';
+
+  @override
+  String get taskReminderTitle => 'Напоминание о задаче';
+
+  @override
+  String get apiKeySetup => 'Ключ Gemini API';
+
+  @override
+  String get enterApiKey => 'Введите API ключ';
+
+  @override
+  String get apiKeySaved => 'API ключ сохранён';
+
+  @override
+  String get invalidApiKey => 'Неверный формат API ключа';
 }

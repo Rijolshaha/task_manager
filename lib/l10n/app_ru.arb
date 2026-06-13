@@ -110,5 +110,14 @@
     }
   },
 
-  "ai_assistant": "AI Помощник"
+  "ai_assistant": "AI Помощник",
+
+  "notifications": "Уведомления",
+  "notificationsSubtitle": "Задачи на ближайшие 7 дней — напоминание каждые 5 часов",
+  "taskReminderTitle": "Напоминание о задаче",
+
+  "apiKeySetup": "Ключ Gemini API",
+  "enterApiKey": "Введите API ключ",
+  "apiKeySaved": "API ключ сохранён",
+  "invalidApiKey": "Неверный формат API ключа"
 }

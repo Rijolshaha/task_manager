@@ -10,6 +10,7 @@ class SessionService {
   static const _kEmail = 'user_email';
   static const _kImagePath = 'profile_image_path';
   static const _kLocale = 'app_locale';
+  static const _kNotificationsEnabled = 'notifications_enabled';
 
   // ✅ Parol uchun xavfsiz storage key
   static const _kPassword = 'user_password_secure';
@@ -88,6 +89,20 @@ class SessionService {
   static Future<String?> getLocaleCode() async {
     final p = await SharedPreferences.getInstance();
     return p.getString(_kLocale);
+  }
+
+  // ─────────────────────────────────────────
+  // Bildirishnomalar
+  // ─────────────────────────────────────────
+
+  static Future<bool> areNotificationsEnabled() async {
+    final p = await SharedPreferences.getInstance();
+    return p.getBool(_kNotificationsEnabled) ?? true;
+  }
+
+  static Future<void> setNotificationsEnabled(bool value) async {
+    final p = await SharedPreferences.getInstance();
+    await p.setBool(_kNotificationsEnabled, value);
   }
 
   // ─────────────────────────────────────────

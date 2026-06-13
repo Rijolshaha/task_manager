@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:task_manager/services/notification_service.dart';
 import 'package:task_manager/services/session_service.dart';
 
 import 'l10n/app_localizations.dart';
@@ -20,6 +21,10 @@ void main() async {
   Hive.registerAdapter(ChatMessageAdapter());
   await Hive.openBox<Task>('tasks');
   await Hive.openBox<ChatMessage>('chat_messages');
+
+  await NotificationService.init();
+  await NotificationService.requestPermissionIfNeeded();
+  await NotificationService.rescheduleAllTasks();
 
   runApp(const MyApp());
 }

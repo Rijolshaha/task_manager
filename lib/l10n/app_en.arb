@@ -108,5 +108,14 @@
     }
   },
 
-  "ai_assistant": "AI Assistant"
+  "ai_assistant": "AI Assistant",
+
+  "notifications": "Notifications",
+  "notificationsSubtitle": "Tasks due within 7 days are reminded every 5 hours",
+  "taskReminderTitle": "Task reminder",
+
+  "apiKeySetup": "Gemini API key",
+  "enterApiKey": "Enter API key",
+  "apiKeySaved": "API key saved",
+  "invalidApiKey": "Invalid API key format"
 }

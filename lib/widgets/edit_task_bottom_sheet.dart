@@ -94,9 +94,6 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
     }
   }
 
-  DateTime _withDefaultTime(DateTime date) =>
-      DateTime(date.year, date.month, date.day, 9, 0);
-
   String _priorityLabel(AppLocalizations l10n, int idx) {
     if (idx == 0) return l10n.low;
     if (idx == 1) return l10n.medium;
@@ -193,16 +190,14 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
     setState(() => _saving = true);
 
     final key = widget.task.key;
-    final int notifId = key is int ? key : key.hashCode;
 
     // ✅ UI ni yopamiz + snackbar
     final messenger = ScaffoldMessenger.of(context);
     if (mounted) Navigator.pop(context);
     messenger.showSnackBar(SnackBar(content: Text(l10n.taskDeleted)));
 
-    // ✅ cancel + delete try/catch
     try {
-      await NotificationService.cancel(notifId);
+      await NotificationService.cancelForKey(key);
     } catch (_) {}
 
     try {
@@ -225,7 +220,6 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
 
     final today = _dayStart(DateTime.now());
     final dueBase = _dayStart(_dueDate ?? today);
-    final notifyAt = _withDefaultTime(dueBase);
 
     widget.task.title = _titleController.text.trim();
     widget.task.description = _descController.text.trim().isNotEmpty
@@ -241,22 +235,19 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
     if (!mounted) return;
 
     final key = widget.task.key;
-    final int notifId = key is int ? key : key.hashCode;
+    final reminderTitle = l10n.taskReminderTitle;
 
     // ✅ UI ni darrov yopamiz
     final messenger = ScaffoldMessenger.of(context);
     if (mounted) Navigator.pop(context);
     messenger.showSnackBar(SnackBar(content: Text(l10n.taskUpdated)));
 
-    // ✅ notification schedule try/catch
     try {
-      await NotificationService.requestPermissionIfNeeded();
-      await NotificationService.cancel(notifId);
-      await NotificationService.schedule(
-        id: notifId,
-        title: 'Task reminder',
-        body: widget.task.title,
-        dateTime: notifyAt,
+      await NotificationService.cancelForKey(key);
+      await NotificationService.scheduleForTask(
+        task: widget.task,
+        hiveKey: key,
+        reminderTitle: reminderTitle,
       );
     } catch (_) {}
   }

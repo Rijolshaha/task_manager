@@ -109,5 +109,14 @@
     }
   },
 
-  "ai_assistant": "AI Yordamchi"
+  "ai_assistant": "AI Yordamchi",
+
+  "notifications": "Bildirishnomalar",
+  "notificationsSubtitle": "Keyingi 7 kun ichidagi vazifalar har 5 soatda eslatiladi",
+  "taskReminderTitle": "Vazifa eslatmasi",
+
+  "apiKeySetup": "Gemini API kaliti",
+  "enterApiKey": "API kalitni kiriting",
+  "apiKeySaved": "API kalit saqlandi",
+  "invalidApiKey": "API kalit noto'g'ri formatda"
 }

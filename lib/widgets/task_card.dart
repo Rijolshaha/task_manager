@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/task.dart';
+import '../services/notification_service.dart';
 
 Color _getCategoryColor(String cat) {
   switch (cat.toLowerCase()) {
@@ -90,7 +91,7 @@ class TaskCard extends StatelessWidget {
                 : (task.isOverdue ? Colors.grey : categoryColor),
             size: 28,
           ),
-          onPressed: () {
+          onPressed: () async {
             if (task.isOverdue) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(l10n.taskOverdueCannotComplete)),
@@ -100,7 +101,19 @@ class TaskCard extends StatelessWidget {
 
             task.isCompleted = !task.isCompleted;
             task.completedAt = task.isCompleted ? DateTime.now() : null;
-            task.save();
+            await task.save();
+
+            try {
+              if (task.isCompleted) {
+                await NotificationService.cancelForKey(task.key);
+              } else {
+                await NotificationService.scheduleForTask(
+                  task: task,
+                  hiveKey: task.key,
+                  reminderTitle: l10n.taskReminderTitle,
+                );
+              }
+            } catch (_) {}
           },
         ),
         title: Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import '../services/api_key_manager.dart';
 import '../services/notification_service.dart';
 import '../services/session_service.dart';
 import '../repositories/message_repository.dart';
@@ -14,8 +14,10 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  final _apiKeyManager = ApiKeyManager();
   Locale _selectedLocale = const Locale('en');
   bool _notificationsEnabled = true;
+  bool _hasApiKey = false;
 
   @override
   void initState() {
@@ -25,27 +27,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _loadSettings() async {
     final code = await SessionService.getLocaleCode();
-    final prefs = await SharedPreferences.getInstance();
-    final notif = prefs.getBool('notifications_enabled') ?? true;
-    
+    final notif = await SessionService.areNotificationsEnabled();
+    final hasKey = await _apiKeyManager.hasApiKey();
+
     if (mounted) {
       setState(() {
         _selectedLocale = Locale(code ?? 'en');
         _notificationsEnabled = notif;
+        _hasApiKey = hasKey;
       });
     }
   }
 
   Future<void> _toggleNotifications(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('notifications_enabled', value);
-    // Yoqilmasa — barcha rejalashtirilgan bildirishnomalarni bekor qilamiz
+    final l10n = AppLocalizations.of(context)!;
+    await SessionService.setNotificationsEnabled(value);
     if (!value) {
       await NotificationService.cancelAll();
+    } else {
+      await NotificationService.rescheduleAllTasks(
+        reminderTitle: l10n.taskReminderTitle,
+      );
     }
-    setState(() {
-      _notificationsEnabled = value;
-    });
+    if (mounted) {
+      setState(() => _notificationsEnabled = value);
+    }
   }
 
   void _changeLanguage() {
@@ -85,6 +91,65 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  Future<void> _setupApiKey() async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController();
+    final existing = await _apiKeyManager.getApiKey();
+    if (!mounted) return;
+    if (existing != null) {
+      controller.text = existing;
+    }
+
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(l10n.apiKeySetup),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: l10n.enterApiKey,
+            border: const OutlineInputBorder(),
+          ),
+          obscureText: true,
+          autocorrect: false,
+          enableSuggestions: false,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+
+    if (saved != true || !mounted) return;
+
+    final key = controller.text.trim();
+    if (!_apiKeyManager.validateKeyFormat(key)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.invalidApiKey)),
+      );
+      return;
+    }
+
+    await _apiKeyManager.saveApiKey(key);
+    if (mounted) {
+      setState(() => _hasApiKey = true);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.apiKeySaved),
+          backgroundColor: const Color(0xFF0DCA9F),
+        ),
+      );
+    }
+    controller.dispose();
+  }
+
   void _clearAIChat() async {
     final l10n = AppLocalizations.of(context)!;
     final confirm = await showDialog<bool>(
@@ -95,8 +160,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.cancel)),
           TextButton(
-            onPressed: () => Navigator.pop(context, true), 
-            child: Text(l10n.yes, style: const TextStyle(color: Colors.red))
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.yes, style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -154,10 +219,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SwitchListTile(
             activeColor: const Color(0xFF0DCA9F),
             secondary: const Icon(Icons.notifications_active, color: Color(0xFF0DCA9F)),
-            title: const Text('Bildirishnomalar'),
-            subtitle: const Text('Vazifalar eslatmalarini yoqish'),
+            title: Text(l10n.notifications),
+            subtitle: Text(l10n.notificationsSubtitle),
             value: _notificationsEnabled,
             onChanged: _toggleNotifications,
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.key, color: Color(0xFF0DCA9F)),
+            title: Text(l10n.apiKeySetup),
+            subtitle: Text(_hasApiKey ? l10n.apiKeySaved : l10n.enterApiKey),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: _setupApiKey,
           ),
           const Divider(),
           // Clear Chat Cache

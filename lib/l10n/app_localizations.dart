@@ -582,6 +582,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI Assistant'**
   String get ai_assistant;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @notificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks due within 7 days are reminded every 5 hours'**
+  String get notificationsSubtitle;
+
+  /// No description provided for @taskReminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Task reminder'**
+  String get taskReminderTitle;
+
+  /// No description provided for @apiKeySetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Gemini API key'**
+  String get apiKeySetup;
+
+  /// No description provided for @enterApiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter API key'**
+  String get enterApiKey;
+
+  /// No description provided for @apiKeySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'API key saved'**
+  String get apiKeySaved;
+
+  /// No description provided for @invalidApiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid API key format'**
+  String get invalidApiKey;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -252,4 +252,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ai_assistant => 'AI Assistant';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get notificationsSubtitle => 'Tasks due within 7 days are reminded every 5 hours';
+
+  @override
+  String get taskReminderTitle => 'Task reminder';
+
+  @override
+  String get apiKeySetup => 'Gemini API key';
+
+  @override
+  String get enterApiKey => 'Enter API key';
+
+  @override
+  String get apiKeySaved => 'API key saved';
+
+  @override
+  String get invalidApiKey => 'Invalid API key format';
 }

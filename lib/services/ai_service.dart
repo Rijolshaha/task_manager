@@ -1,20 +1,25 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/chat_message_payload.dart';
+import 'api_key_manager.dart';
 
 class AiService {
-  // 🔑 API KALITINGIZNI SHU YERGA QO'YING:
-  static const String geminiApiKey = 'AIzaSyDPyfNOy8uQ_ztGaEBEAqOzeSTlrfRhMHc';
+  final ApiKeyManager _apiKeyManager;
+
+  AiService({ApiKeyManager? apiKeyManager})
+    : _apiKeyManager = apiKeyManager ?? ApiKeyManager();
 
   Future<String> sendMessage(List<ChatMessagePayload> messages) async {
-    if (geminiApiKey.trim().isEmpty) {
-      throw Exception('Iltimos, ai_service.dart faylidagi geminiApiKey o\'zgaruvchisiga Gemini API kalitingizni kiriting!');
+    final apiKey = await _apiKeyManager.getApiKey();
+    if (apiKey == null || apiKey.trim().isEmpty) {
+      throw Exception(
+        'Gemini API kaliti topilmadi. Sozlamalar bo\'limidan API kalitni kiriting.',
+      );
     }
 
     final url =
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$geminiApiKey';
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$apiKey';
 
-    // Gemini roles are strictly 'user' and 'model'
     final contents = messages.map((m) {
       final role = m.role == 'assistant' ? 'model' : 'user';
       return {

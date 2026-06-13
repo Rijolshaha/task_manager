@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../l10n/app_localizations.dart';
 import '../models/task.dart';
@@ -55,9 +54,6 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
       _dueDate = today.add(const Duration(days: 7));
     }
   }
-
-  DateTime _withDefaultTime(DateTime date) =>
-      DateTime(date.year, date.month, date.day, 9, 0);
 
   String _priorityLabel(AppLocalizations l10n, int idx) {
     if (idx == 0) return l10n.low;
@@ -145,7 +141,6 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
 
     final today = _dayStart(DateTime.now());
     final dueBase = _dayStart(_dueDate ?? today);
-    final notifyAt = _withDefaultTime(dueBase);
 
     final newTask = Task(
       title: _titleController.text.trim(),
@@ -162,28 +157,23 @@ class _NewTaskBottomSheetState extends State<NewTaskBottomSheet> {
 
     final box = Hive.box<Task>('tasks');
     final hiveKey = await box.add(newTask);
-    final int notifId = hiveKey;
 
     // Capture context-dependent values before async operations
     final messenger = ScaffoldMessenger.of(context);
     final taskAddedMessage = l10n.taskAdded;
+    final reminderTitle = l10n.taskReminderTitle;
 
     if (!mounted) return;
     Navigator.pop(context);
     messenger.showSnackBar(SnackBar(content: Text(taskAddedMessage)));
 
-    // Notification scheduling in separate try/catch
     try {
-      await NotificationService.requestPermissionIfNeeded();
-      await NotificationService.schedule(
-        id: notifId,
-        title: 'Task reminder',
-        body: newTask.title,
-        dateTime: notifyAt,
+      await NotificationService.scheduleForTask(
+        task: newTask,
+        hiveKey: hiveKey,
+        reminderTitle: reminderTitle,
       );
-    } catch (_) {
-      // xato bo‘lsa ham task saqlangan, UI yopilgan bo‘ladi
-    }
+    } catch (_) {}
   }
 
   @override
